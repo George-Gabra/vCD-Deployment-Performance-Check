@@ -1,4 +1,4 @@
-# VMware vCloud Director vDC vAPPs Deployment Performance Check
+# VMware vCloud Director vAPPs Deployment Performance Check
 
 ## Overview
 
