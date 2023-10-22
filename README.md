@@ -2,7 +2,7 @@
 
 ## Overview
 
-This script is designed to monitor the performance of vApp deployments on VMware vCloud Director vDC. It automates the deployment of a vApp from a specified template either on the default vDC configured on the tenant at the time of execution or a randomly selected vDC if no default vDC was found. If the deployment exceeds the desired deployment time threshold, the script sends a high-urgent notification to a predefined email address.
+This script is designed to check performance of vApp deployments on VMware vCloud Director. It automates the deployment of a vApp from a specified template either on the default vDC configured on the tenant at the time of execution or a randomly selected vDC if no default vDC was found. If the deployment exceeds the desired deployment time threshold, the script sends a high-urgent notification to a predefined email address.
 
 ## Usage
 
