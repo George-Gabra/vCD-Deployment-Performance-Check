@@ -252,7 +252,7 @@ def create_vApp(vdcname, vapp_name, template_name, catalog_name, timeout):
 # Start: Function to send email notification
 def send_email(vapp_name, cloud_name, org_name, vdc_name, task_id, timeout, message_id):
 
- smtp_server = 'smtp.vmware.com'
+ smtp_server = 'smtp.example.com'
  smtp_port = 25
 
  sender_email = 'sender@example.com'
