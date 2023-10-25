@@ -139,10 +139,11 @@ def get_default_vdc():
     vdclist = org_instance.list_vdcs()
     available_vdcs = []
 
-# Build list of available vDCs' names and exclude any vDC start with "DONT_USE" prefix
+# Build list of available vDCs' names by excluding any vDC start with "DONT_USE" prefix or disabled vDCs
     for i in range(0, len(vdclist)):
         vdc = vdclist[i] 
-        if not vdc['name'].startswith("DONT_USE"):
+        vdc_resource = org_instance.get_vdc(vdc['name'])
+        if not vdc['name'].startswith("DONT_USE") and vdc_resource.IsEnabled:
             available_vdcs.append(vdc['name'])
 
 # Exit the script if there are no available vDCs
