@@ -27,7 +27,7 @@ from email.mime.multipart import MIMEMultipart
 
 # Create Logger
 logger = logging.getLogger('script_logger')
-stream_handler = logging.StreamHandler()
+stream_handler = logging.StreamHandler(sys.stdout)
 stream_handler.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(levelname)s: %(message)s')
 stream_handler.setFormatter(formatter)
