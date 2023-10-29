@@ -5,6 +5,7 @@
 - [Overview](#overview)
 - [Usage](#usage)
 - [Examples](#examples)
+- [Ansible Playbook Description](#ansible-playbook-description)
 
 ## Overview
 
@@ -48,4 +49,11 @@ INFO: 19/10/2023 16:02:38: vApp Test_Performance_vAPP created in 151.18470907211
 INFO: 19/10/2023 16:03:40: Start deleting vApp Test_Performance_vAPP...
 INFO: 19/10/2023 16:03:56: vApp Test_Performance_vAPP has been deleted.
 INFO: 19/10/2023 16:03:56: Logging out from cloud.example.com tenant sysadmins
+```
+
+## Ansible Playbook Description
+Ansible playbook vcd_deployment_performance_check_playbook.yml can be used to run vcd_deployment_performance_check.py script on multiple cloud locations. This Ansible playbook runs the performance check script with the corresponding parameters on each cloud location specified in the CloudLocations group from ansible_hosts inventory file. The playbook will use the variables defined in vars.yml to customize the execution for each cloud location.
+
+```bash
+ansible-playbook vcd_deployment_performance_check_playbook.yml -i ansible_hosts
 ```
