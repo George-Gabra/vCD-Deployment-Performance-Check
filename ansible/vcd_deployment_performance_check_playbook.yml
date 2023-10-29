@@ -1,0 +1,17 @@
+---
+- name: Run vcd_deployment_performance_check.py on multiple Cloud Locations
+  hosts: CloudLocations
+  gather_facts: no
+
+  tasks:
+    - name: Initialize global variables file
+      include_vars:
+        file: "vars/vars.yml"
+
+    - name: Set facts for vCD locations
+      set_fact:
+        vcd_vars: "{{ CloudLocations[inventory_hostname] }}"
+
+    - name: Run script on each Cloud Location
+      shell: |
+        python3 {{ playbook_dir }}/../vcd_deployment_performance_check.py CloudURI={{ vcd_vars.cloud_uri | string }} Tenant={{ vcd_vars.tenant | string }} Username={{ vcd_vars.username | string }} Password={{ vcd_vars.password | string }} vAPP_Name={{ vcd_vars.vapp_name | string }} Template_Name={{ vcd_vars.template_name | string }} Catalog_Name={{ vcd_vars.catalog_name | string }} Timeout={{ vcd_vars.timeout | int }}

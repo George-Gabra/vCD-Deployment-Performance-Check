@@ -1,0 +1,21 @@
+---
+CloudLocations:
+ EMEA-sysadmins:
+    cloud_uri: "cloud.emea.example.com"
+    tenant: "sysadmins"
+    username: "svc-user"
+    password: "PASSWORD"
+    vapp_name: "Test_Performance_vAPP"
+    template_name: "ubuntu-latest"
+    catalog_name: "EMEA-vCloud-Demos"
+    timeout: 7200
+
+ AMER-engineering:
+    cloud_uri: "cloud.amer.example.com"
+    tenant: "engineering"
+    username: "svc-user"
+    password: "PASSWORD"
+    vapp_name: "Test_Performance_vAPP"
+    template_name: "ubuntu-latest"
+    catalog_name: "AMER-vCloud-Demos"
+    timeout: 7200

@@ -1,0 +1,10 @@
+[CloudLocations:vars]
+ansible_connection=local
+
+[PSCoE-pscoe]
+EMEA-sysadmins ansible_host=127.0.0.1
+AMER-engineering ansible_host=127.0.0.1
+
+[CloudLocations]
+EMEA-sysadmins ansible_host=127.0.0.1
+AMER-engineering ansible_host=127.0.0.1
