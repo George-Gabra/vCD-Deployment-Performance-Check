@@ -1,5 +1,6 @@
 import sys
 import logging
+import logging.handlers
 import traceback
 import urllib3
 import requests
@@ -26,13 +27,16 @@ from email.mime.multipart import MIMEMultipart
 
 
 # Create Logger
-logger = logging.getLogger('script_logger')
+logger = logging.getLogger('vCD_PerfChecker')
 stream_handler = logging.StreamHandler(sys.stdout)
+vrli_handler = logging.handlers.SysLogHandler(address=('vrli.example.com', 514))
 stream_handler.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(levelname)s: %(message)s')
-stream_handler.setFormatter(formatter)
-logger.addHandler(stream_handler)
+formatter = logging.Formatter('%(name)s: %(levelname)s: %(message)s')
 logger.setLevel(logging.DEBUG)
+stream_handler.setFormatter(formatter)
+vrli_handler.setFormatter(formatter)
+logger.addHandler(stream_handler)
+logger.addHandler(vrli_handler)
 
 # Start: Collect arguments
 def parse_arguments(arg):
@@ -227,7 +231,7 @@ def create_vApp(vdcname, vapp_name, template_name, catalog_name, timeout):
    elif taskstatus == 'success':
     now = datetime.now()
     dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-    logger.info (dt_string + ": vApp " + vapp_name + " created in " + str(elapsed_time) + " seconds.")
+    logger.info (dt_string + ": vApp " + vapp_name + " created on " + cloud + " tenant " + org + " vDC " + vdcname + " in " + str(elapsed_time) + " seconds.")
     time.sleep(60)
     delete_vapp(client, vapp_name, vdcname)
     break
@@ -260,11 +264,11 @@ def send_email(vapp_name, cloud_name, org_name, vdc_name, task_id, timeout, mess
  receiver_email = 'receiver@example.com'
 
  if message_id == 1:
-  subject = f'Critical: vAPP deployment performance check failed on {cloud_name} tenant {org_name}'
+  subject = f'[vCD_PerfChecker] Critical: vAPP deployment performance check failed on {cloud_name} tenant {org_name}'
   message = f'vAPP deployment performance did not meet performance threshold.\n\n vAPP Name: {vapp_name}\n Cloud Location: {cloud_name}\n Tenant Name: {org_name}\n Current Default vDC: {vdc_name}\n Task ID: {task_id}\n Timeout Value: {timeout} seconds.'
    
  elif message_id == 2:
-  subject = f'Warning: vAPP deployment performance check on {cloud_name} tenant {org_name} detected running task'
+  subject = f'[vCD_PerfChecker] Warning: vAPP deployment performance check on {cloud_name} tenant {org_name} detected running task'
   message = f'vDC deployment performance check job detected previous deployment task still running.\n\n vAPP Name: {vapp_name}\n Cloud Location: {cloud_name}\n Tenant Name: {org_name}\n Task running on vDC: {vdc_name}\n Task ID: {task_id}.\n\n Check previous script alerts reported for that tenant.'
 
  else: 
