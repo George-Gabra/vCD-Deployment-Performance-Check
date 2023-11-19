@@ -218,7 +218,7 @@ def create_vApp(vdcname, vapp_name, template_name, catalog_name, timeout):
      logger.warning (dt_string + ": vAPP creation on " + cloud + " tenant " + org + " vDC " + vdcname + " timeout exeeded")
 
      send_email(vapp_name, cloud, org, vdcname, task_id, target_duration, 1)
-     #cancel_task(client, vdcname, task, task_id)
+     cancel_task(client, vdcname, task, task_id)
      #delete_vapp(client, vapp_name, vdcname)
      break
 
@@ -330,42 +330,24 @@ def cancel_task(client, vdcname, task, task_id):
  now = datetime.now()
  dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
  logger.info (dt_string + ": Cancelling vAPP creation task " + task_id)
- userdetails = org_instance.get_user(user)
- task_updater = Task(client)
- result = client.get_resource(f"{client.get_api_uri()}/task/{task_id}")
 
- task_href = task.get('href')
- task_namespace = task.get('serviceNamespace')
- task_operation = task.get('operation')
- task_operation_name = task.get('operationName')
- task_details = task.Details.text
- task_owner_href = task.Owner.get('href')
- task_owner_name = task.Owner.get('name')
- task_owner_type = task.Owner.get('type')
- task_organization = task.Organization.get('name')
- task_user = task.User.get('name')
- task_user_href = userdetails.get('href')
- 
  try:
-  updated_task = task_updater.update(
-                    task_href=task_href,
-                    status='aborted',
-                    progress='100',
-                    namespace=task_namespace,
-                    operation=task_operation,
-                    operation_name=task_operation_name,
-                    details="Aborted creation task of vAPP",
-                    owner_href=task_owner_href,
-                    owner_name=task_owner_name,
-                    owner_type=task_owner_type,
-                    user_href=task_user_href,
-                    user_name=task_user)
-  print (updated_task)
+  task_href = task.get('href')
+  response = client.post_resource(uri=f"{task_href}/action/cancel",
+                      contents=None,
+                      media_type=None,
+                      params=None,
+                      objectify_results=True,
+                      extra_headers=None)
+
+  now = datetime.now()
+  dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+  logger.info(dt_string + ": vAPP creation task " + task_id + " cancellation has been requested")
 
  except Exception as e:
   now = datetime.now()
   dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-  logger.error ("Failed to cancel vAPP creation task" + task_id + " " + str(e))
+  logger.error (dt_string + ": Failed to cancel vAPP creation task" + task_id + " " + str(e))
 # End: cancel_task function
 
 # Start: Logout from cloud 
